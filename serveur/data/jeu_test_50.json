@@ -1,0 +1,305 @@
+{
+    "derniere_actu": "Ouverture du marché : 50 titres cotés, bonne séance à tous !",
+    "entreprises": {
+        "TECH": {
+            "nom": "Nova Technologies",
+            "secteur": "Informatique",
+            "prix": 42.5,
+            "variation": 0.0
+        },
+        "BYTE": {
+            "nom": "ByteWorks",
+            "secteur": "Informatique",
+            "prix": 128.9,
+            "variation": 0.0
+        },
+        "CLOD": {
+            "nom": "NuageSoft",
+            "secteur": "Informatique",
+            "prix": 87.4,
+            "variation": 0.0
+        },
+        "PIXL": {
+            "nom": "Pixelia Games",
+            "secteur": "Informatique",
+            "prix": 23.15,
+            "variation": 0.0
+        },
+        "ROBO": {
+            "nom": "RoboLogic",
+            "secteur": "Informatique",
+            "prix": 64.3,
+            "variation": 0.0
+        },
+        "CYBR": {
+            "nom": "CyberShield",
+            "secteur": "Informatique",
+            "prix": 156.0,
+            "variation": 0.0
+        },
+        "BIO": {
+            "nom": "BioSanté Labs",
+            "secteur": "Santé",
+            "prix": 18.2,
+            "variation": 0.0
+        },
+        "PHAR": {
+            "nom": "PharmaNova",
+            "secteur": "Santé",
+            "prix": 94.6,
+            "variation": 0.0
+        },
+        "GENE": {
+            "nom": "GenoMed",
+            "secteur": "Santé",
+            "prix": 37.85,
+            "variation": 0.0
+        },
+        "DENT": {
+            "nom": "DentaCare",
+            "secteur": "Santé",
+            "prix": 12.4,
+            "variation": 0.0
+        },
+        "VITA": {
+            "nom": "VitaPlus",
+            "secteur": "Santé",
+            "prix": 29.75,
+            "variation": 0.0
+        },
+        "NRG": {
+            "nom": "Eco Energie",
+            "secteur": "Énergie",
+            "prix": 75.1,
+            "variation": 0.0
+        },
+        "SOLR": {
+            "nom": "SolarWave",
+            "secteur": "Énergie",
+            "prix": 48.2,
+            "variation": 0.0
+        },
+        "WIND": {
+            "nom": "VentOuest",
+            "secteur": "Énergie",
+            "prix": 33.6,
+            "variation": 0.0
+        },
+        "HYDR": {
+            "nom": "HydroGen Power",
+            "secteur": "Énergie",
+            "prix": 59.9,
+            "variation": 0.0
+        },
+        "PETR": {
+            "nom": "PétroNord",
+            "secteur": "Énergie",
+            "prix": 81.3,
+            "variation": 0.0
+        },
+        "AGRI": {
+            "nom": "AgriPlus",
+            "secteur": "Agriculture",
+            "prix": 31.0,
+            "variation": 0.0
+        },
+        "BLE": {
+            "nom": "Blé d'Or",
+            "secteur": "Agriculture",
+            "prix": 9.8,
+            "variation": 0.0
+        },
+        "VIGN": {
+            "nom": "Domaine des Vignes",
+            "secteur": "Agriculture",
+            "prix": 52.7,
+            "variation": 0.0
+        },
+        "BIOF": {
+            "nom": "BioFerme",
+            "secteur": "Agriculture",
+            "prix": 14.25,
+            "variation": 0.0
+        },
+        "AUTO": {
+            "nom": "ElectroMotors",
+            "secteur": "Transport",
+            "prix": 55.8,
+            "variation": 0.0
+        },
+        "RAIL": {
+            "nom": "EuroRail",
+            "secteur": "Transport",
+            "prix": 40.1,
+            "variation": 0.0
+        },
+        "AERO": {
+            "nom": "AéroJet",
+            "secteur": "Transport",
+            "prix": 112.5,
+            "variation": 0.0
+        },
+        "NAVI": {
+            "nom": "NaviMar",
+            "secteur": "Transport",
+            "prix": 26.9,
+            "variation": 0.0
+        },
+        "VELO": {
+            "nom": "VéloCité",
+            "secteur": "Transport",
+            "prix": 7.45,
+            "variation": 0.0
+        },
+        "BANK": {
+            "nom": "Banque du Nord",
+            "secteur": "Finance",
+            "prix": 68.4,
+            "variation": 0.0
+        },
+        "ASSU": {
+            "nom": "AssurPlus",
+            "secteur": "Finance",
+            "prix": 45.3,
+            "variation": 0.0
+        },
+        "INVS": {
+            "nom": "InvestFlow",
+            "secteur": "Finance",
+            "prix": 91.2,
+            "variation": 0.0
+        },
+        "IMMO": {
+            "nom": "ImmoBelge",
+            "secteur": "Immobilier",
+            "prix": 36.7,
+            "variation": 0.0
+        },
+        "CONS": {
+            "nom": "BâtiPro",
+            "secteur": "Immobilier",
+            "prix": 28.15,
+            "variation": 0.0
+        },
+        "HOME": {
+            "nom": "HomeDesign",
+            "secteur": "Immobilier",
+            "prix": 19.9,
+            "variation": 0.0
+        },
+        "CHOC": {
+            "nom": "Chocolaterie Royale",
+            "secteur": "Alimentation",
+            "prix": 24.6,
+            "variation": 0.0
+        },
+        "BIER": {
+            "nom": "Brasserie des Ardennes",
+            "secteur": "Alimentation",
+            "prix": 17.35,
+            "variation": 0.0
+        },
+        "PAIN": {
+            "nom": "Boulangerie Dorée",
+            "secteur": "Alimentation",
+            "prix": 6.2,
+            "variation": 0.0
+        },
+        "FROM": {
+            "nom": "Fromagerie de Gaume",
+            "secteur": "Alimentation",
+            "prix": 13.8,
+            "variation": 0.0
+        },
+        "FRIT": {
+            "nom": "Frit'Express",
+            "secteur": "Alimentation",
+            "prix": 4.95,
+            "variation": 0.0
+        },
+        "LUXE": {
+            "nom": "Maison Élégance",
+            "secteur": "Luxe",
+            "prix": 185.0,
+            "variation": 0.0
+        },
+        "MODE": {
+            "nom": "ModeAvenir",
+            "secteur": "Luxe",
+            "prix": 34.4,
+            "variation": 0.0
+        },
+        "JOLI": {
+            "nom": "Joaillerie Éclat",
+            "secteur": "Luxe",
+            "prix": 142.3,
+            "variation": 0.0
+        },
+        "TELE": {
+            "nom": "TéléLink",
+            "secteur": "Télécom",
+            "prix": 22.7,
+            "variation": 0.0
+        },
+        "FIBR": {
+            "nom": "FibreNet",
+            "secteur": "Télécom",
+            "prix": 38.95,
+            "variation": 0.0
+        },
+        "SATL": {
+            "nom": "SatCom",
+            "secteur": "Télécom",
+            "prix": 71.6,
+            "variation": 0.0
+        },
+        "ACIE": {
+            "nom": "AcierWallon",
+            "secteur": "Industrie",
+            "prix": 21.3,
+            "variation": 0.0
+        },
+        "CHIM": {
+            "nom": "ChimiCorp",
+            "secteur": "Industrie",
+            "prix": 46.8,
+            "variation": 0.0
+        },
+        "MACH": {
+            "nom": "MachinaTech",
+            "secteur": "Industrie",
+            "prix": 83.5,
+            "variation": 0.0
+        },
+        "RECY": {
+            "nom": "RecyclaVert",
+            "secteur": "Industrie",
+            "prix": 11.6,
+            "variation": 0.0
+        },
+        "SPRT": {
+            "nom": "SportMax",
+            "secteur": "Loisirs",
+            "prix": 27.4,
+            "variation": 0.0
+        },
+        "CINE": {
+            "nom": "CinéStar",
+            "secteur": "Loisirs",
+            "prix": 15.9,
+            "variation": 0.0
+        },
+        "MUSI": {
+            "nom": "MusiStream",
+            "secteur": "Loisirs",
+            "prix": 58.2,
+            "variation": 0.0
+        },
+        "VOYG": {
+            "nom": "VoyageÀmoi",
+            "secteur": "Loisirs",
+            "prix": 32.1,
+            "variation": 0.0
+        }
+    }
+}

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marché Virtuel</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#1b1f24;--muted:#667085;--line:#e4e7ec;--up:#15803d;--down:#b91c1c;--accent:#2563eb;--upbg:#dcfce7;--downbg:#fee2e2}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1216;--card:#171c22;--text:#e6e9ee;--muted:#98a2b3;--line:#27303a;--up:#4ade80;--down:#f87171;--accent:#60a5fa;--upbg:#12301f;--downbg:#3a1717}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--card);border-bottom:1px solid var(--line)}
+h1{font-size:20px;margin:0}
+.outils{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;color:var(--muted);font-size:14px}
+.outils label{display:flex;gap:6px;align-items:center;cursor:pointer}
+button,select{font:inherit;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+button.principal{background:var(--accent);border-color:var(--accent);color:#fff}
+main{max-width:1180px;margin:0 auto;padding:16px 20px 40px;display:grid;gap:16px}
+.panneau{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panneau h2{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 10px}
+#actu{display:flex;gap:10px;align-items:center;font-weight:600}
+#actu small{font-weight:400;color:var(--muted)}
+#cartes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.carte{display:grid;gap:2px;text-align:left;border-left:5px solid var(--c);padding:10px 12px;border-radius:10px}
+.carte.off{opacity:.4}
+.carte .sym{font-weight:700;font-size:16px}
+.carte .nom{font-size:12px;color:var(--muted)}
+.carte .prix{font-size:20px;font-weight:700;margin-top:4px}
+.up{color:var(--up)}.down{color:var(--down)}
+.carte .var{font-size:13px;font-weight:600}
+#cartes.compact{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px}
+#cartes.compact .carte{padding:6px 8px}
+#cartes.compact .nom{display:none}
+#cartes.compact .sym{font-size:13px}
+#cartes.compact .prix{font-size:15px;margin-top:0}
+#cartes.compact .var{font-size:12px}
+.barre{display:flex;gap:8px;margin-bottom:-6px}
+.barre button{font-size:13px;padding:4px 10px}
+.graphwrap{position:relative}
+svg{width:100%;height:auto;display:block}
+.axe{fill:var(--muted);font-size:11px}
+.grille{stroke:var(--line);stroke-width:1}
+#tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;box-shadow:0 4px 14px rgba(0,0,0,.15);display:none;white-space:nowrap}
+#tip b{display:block;margin-bottom:2px}
+.bas{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:16px}
+@media (max-width:860px){.bas{grid-template-columns:1fr}}
+ul{list-style:none;margin:0;padding:0}
+#evenements li{display:flex;gap:10px;padding:7px 8px;border-radius:8px;margin-bottom:4px;background:var(--bg)}
+#evenements li.up{background:var(--upbg);color:var(--text)}
+#evenements li.down{background:var(--downbg);color:var(--text)}
+time{color:var(--muted);font-size:12px;white-space:nowrap;padding-top:1px}
+.vide{color:var(--muted);padding:6px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:12px;color:var(--muted);text-align:left;font-weight:600;padding:4px 6px;border-bottom:1px solid var(--line)}
+td{padding:6px;border-bottom:1px solid var(--line)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+th.num{text-align:right}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.badge.achat{background:var(--upbg);color:var(--up)}
+.badge.vente{background:var(--downbg);color:var(--down)}
+#etat{color:var(--down);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <h1>📈 Marché Virtuel</h1>
+  <div class="outils">
+    <span id="etat"></span>
+    <span>Prochain cycle : <b id="compte">…</b></span>
+    <label><input type="checkbox" id="auto" checked> Actualisation auto (5 s)</label>
+    <select id="mode" title="Échelle du graphique">
+      <option value="prix">Prix en €</option>
+      <option value="base">Évolution (base 100)</option>
+    </select>
+    <button class="principal" id="rafraichir">⟳ Rafraîchir</button>
+  </div>
+</header>
+
+<main>
+  <div class="panneau" id="actu"></div>
+  <div class="barre">
+    <button id="toutafficher">Tout afficher</button>
+    <button id="toutmasquer">Tout masquer</button>
+  </div>
+  <div id="cartes"></div>
+
+  <div class="panneau">
+    <h2>Évolution des cours <small style="text-transform:none;letter-spacing:0">— clique sur une entreprise pour afficher/masquer sa courbe · traits pointillés = actualités choc</small></h2>
+    <div class="graphwrap">
+      <svg id="graph" viewBox="0 0 860 340" role="img" aria-label="Courbes des cours"></svg>
+      <div id="tip"></div>
+    </div>
+  </div>
+
+  <div class="bas">
+    <div class="panneau">
+      <h2>Évènements</h2>
+      <ul id="evenements"></ul>
+    </div>
+    <div class="panneau">
+      <h2>Achats / ventes</h2>
+      <table>
+        <thead><tr><th>Heure</th><th>Joueur</th><th>Ordre</th><th>Titre</th><th class="num">Qté</th><th class="num">Prix</th><th class="num">Montant</th></tr></thead>
+        <tbody id="transactions"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script>
+// 8 couleurs bien distinctes, puis des teintes générées (angle d'or) pour les marchés plus grands
+const BASE = ["#2563eb","#e11d48","#16a34a","#d97706","#7c3aed","#0891b2","#db2777","#65a30d"];
+const COULEURS = Array.from({length: 200}, (_, i) =>
+  i < BASE.length ? BASE[i] : `hsl(${Math.round(i * 137.508) % 360} 68% 48%)`);
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const heure = t => new Date(t * 1000).toLocaleTimeString("fr-BE");
+const eur = v => v.toLocaleString("fr-BE", {minimumFractionDigits:2, maximumFractionDigits:2}) + " €";
+const pct = v => (v > 0 ? "+" : "") + v.toFixed(2).replace(".", ",") + " %";
+
+let data = null, symboles = [], masque = new Set(), restant = 0, ctx = null;
+
+async function charger() {
+  let d;
+  try {
+    const r = await fetch("/api/historique");
+    if (!r.ok) {   // le serveur répond, mais pas avec la bonne route (ancienne version ?)
+      $("etat").textContent = `⚠ Le serveur répond HTTP ${r.status} : relance serveur.py avec les derniers fichiers`;
+      return;
+    }
+    d = await r.json();
+  } catch (e) {  // aucune réponse : serveur arrêté, mauvaise adresse, réseau coupé
+    $("etat").textContent = "⚠ Serveur injoignable (est-il démarré ?)";
+    return;
+  }
+  data = d;
+  symboles = Object.keys(data.marche.entreprises);
+  restant = data.secondes_restantes;
+  try {
+    afficher();
+    $("etat").textContent = "";
+  } catch (e) {  // bug d'affichage : ne pas le confondre avec une panne réseau
+    console.error(e);
+    $("etat").textContent = "⚠ Erreur d'affichage : " + e.message;
+  }
+}
+
+function afficher() {
+  const ent = data.marche.entreprises;
+
+  $("actu").innerHTML = "📰 " + esc(data.marche.derniere_actu) + " <small>(dernière actualité)</small>";
+
+  $("cartes").className = symboles.length > 12 ? "compact" : "";
+  $("cartes").innerHTML = symboles.map((s, i) => {
+    const e = ent[s];
+    return `<button class="panneau carte ${masque.has(s) ? "off" : ""}" data-s="${esc(s)}" title="${esc(e.nom)} · ${esc(e.secteur)}" style="--c:${COULEURS[i % COULEURS.length]}">
+      <span class="sym">${esc(s)}</span>
+      <span class="nom">${esc(e.nom)} · ${esc(e.secteur)}</span>
+      <span class="prix">${eur(e.prix)}</span>
+      <span class="var ${e.variation >= 0 ? "up" : "down"}">${e.variation >= 0 ? "▲" : "▼"} ${pct(e.variation)}</span>
+    </button>`;
+  }).join("");
+
+  graphique();
+
+  const evs = [...data.evenements].reverse().slice(0, 15);
+  $("evenements").innerHTML = evs.length
+    ? evs.map(e => `<li class="${e.variation > 0 ? "up" : e.variation < 0 ? "down" : ""}"><time>${heure(e.t)}</time><span>${esc(e.texte)}</span></li>`).join("")
+    : `<li class="vide">Aucun évènement pour l'instant.</li>`;
+
+  const trs = [...data.transactions].reverse().slice(0, 20);
+  $("transactions").innerHTML = trs.length
+    ? trs.map(t => `<tr><td>${heure(t.t)}</td><td>${esc(t.pseudo)}</td>
+        <td><span class="badge ${t.type_ordre === "ACHAT" ? "achat" : "vente"}">${esc(t.type_ordre)}</span></td>
+        <td>${esc(t.symbole)}</td><td class="num">${t.quantite}</td>
+        <td class="num">${eur(t.prix)}</td><td class="num">${eur(t.montant)}</td></tr>`).join("")
+    : `<tr><td colspan="7" class="vide">Aucune transaction pour l'instant.</td></tr>`;
+}
+
+function graphique() {
+  const W = 860, H = 340, m = {l:58, r:16, t:14, b:28};
+  const svg = $("graph");
+  const mode = $("mode").value;
+  const visibles = symboles.filter(s => !masque.has(s) && (data.cours[s] || []).length);
+  ctx = null;
+  if (!visibles.length) {
+    svg.innerHTML = `<text x="${W/2}" y="${H/2}" text-anchor="middle" class="axe">Aucune courbe à afficher</text>`;
+    return;
+  }
+
+  const series = visibles.map(s => {
+    const pts = data.cours[s], base = pts[0].prix;
+    return {s, c: COULEURS[symboles.indexOf(s) % COULEURS.length],
+            pts: pts.map(p => ({t:p.t, prix:p.prix, v: mode === "prix" ? p.prix : p.prix / base * 100}))};
+  });
+
+  let tmin = Infinity, tmax = -Infinity, vmin = Infinity, vmax = -Infinity;
+  series.forEach(({pts}) => pts.forEach(p => {
+    tmin = Math.min(tmin, p.t); tmax = Math.max(tmax, p.t);
+    vmin = Math.min(vmin, p.v); vmax = Math.max(vmax, p.v);
+  }));
+  if (tmax === tmin) tmax = tmin + 1;
+  const pad = (vmax - vmin) * 0.08 || 1;
+  vmin -= pad; vmax += pad;
+  const X = t => m.l + (t - tmin) / (tmax - tmin) * (W - m.l - m.r);
+  const Y = v => H - m.b - (v - vmin) / (vmax - vmin) * (H - m.t - m.b);
+
+  let out = "";
+  for (let i = 0; i <= 4; i++) {
+    const v = vmin + (vmax - vmin) * i / 4, y = Y(v);
+    out += `<line class="grille" x1="${m.l}" x2="${W - m.r}" y1="${y}" y2="${y}"/>
+            <text class="axe" x="${m.l - 8}" y="${y + 4}" text-anchor="end">${mode === "prix" ? v.toFixed(1) : v.toFixed(1)}</text>`;
+  }
+  for (let i = 0; i <= 3; i++) {
+    const t = tmin + (tmax - tmin) * i / 3;
+    out += `<text class="axe" x="${X(t)}" y="${H - 8}" text-anchor="${i === 0 ? "start" : i === 3 ? "end" : "middle"}">${heure(t)}</text>`;
+  }
+
+  // marqueurs d'actualités choc
+  data.evenements.forEach(e => {
+    if (e.t < tmin || e.t > tmax || !symboles.includes(e.symbole)) return;
+    const c = COULEURS[symboles.indexOf(e.symbole) % COULEURS.length];
+    out += `<line x1="${X(e.t)}" x2="${X(e.t)}" y1="${m.t}" y2="${H - m.b}" stroke="${c}" stroke-width="1.5" stroke-dasharray="4 4" opacity=".7"><title>${esc(e.texte)}</title></line>`;
+  });
+
+  series.forEach(({c, pts}) => {
+    out += `<polyline fill="none" stroke="${c}" stroke-width="2.2" stroke-linejoin="round" points="${pts.map(p => X(p.t).toFixed(1) + "," + Y(p.v).toFixed(1)).join(" ")}"/>`;
+    const d = pts[pts.length - 1];
+    out += `<circle cx="${X(d.t)}" cy="${Y(d.v)}" r="3.5" fill="${c}"/>`;
+  });
+  out += `<line id="guide" y1="${m.t}" y2="${H - m.b}" stroke="currentColor" opacity=".35" style="display:none"/>`;
+
+  svg.innerHTML = out;
+  ctx = {W, H, m, tmin, tmax, series, X, Y};
+}
+
+// info-bulle au survol du graphique
+$("graph").addEventListener("mousemove", ev => {
+  if (!ctx) return;
+  const svg = $("graph"), r = svg.getBoundingClientRect();
+  const x = (ev.clientX - r.left) * ctx.W / r.width;
+  const t = ctx.tmin + (x - ctx.m.l) / (ctx.W - ctx.m.l - ctx.m.r) * (ctx.tmax - ctx.tmin);
+  if (t < ctx.tmin || t > ctx.tmax) { cacherInfo(); return; }
+  let lignes = ctx.series.map(({s, c, pts}) => {
+    let b = pts[0];
+    for (const p of pts) if (Math.abs(p.t - t) < Math.abs(b.t - t)) b = p;
+    return {s, c, b};
+  });
+  if (lignes.length > 8) {   // beaucoup de courbes : on n'affiche que les 3 plus proches du curseur
+    const y = (ev.clientY - r.top) * ctx.H / r.height;
+    lignes.sort((a, b) => Math.abs(ctx.Y(a.b.v) - y) - Math.abs(ctx.Y(b.b.v) - y));
+    lignes = lignes.slice(0, 3);
+  }
+  const g = svg.querySelector("#guide");
+  g.setAttribute("x1", ctx.X(lignes[0].b.t)); g.setAttribute("x2", ctx.X(lignes[0].b.t));
+  g.style.display = "";
+  const tip = $("tip"), box = svg.parentElement.getBoundingClientRect();
+  tip.innerHTML = `<b>${heure(lignes[0].b.t)}</b>` +
+    lignes.map(l => `<div><span style="color:${l.c}">●</span> ${esc(l.s)} : ${eur(l.b.prix)}</div>`).join("");
+  tip.style.display = "block";
+  const gauche = ev.clientX - box.left + 14;
+  tip.style.left = (gauche + tip.offsetWidth > box.width ? gauche - tip.offsetWidth - 28 : gauche) + "px";
+  tip.style.top = Math.max(0, ev.clientY - box.top - 20) + "px";
+});
+function cacherInfo() {
+  $("tip").style.display = "none";
+  const g = $("graph").querySelector("#guide"); if (g) g.style.display = "none";
+}
+$("graph").addEventListener("mouseleave", cacherInfo);
+
+$("cartes").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-s]"); if (!b) return;
+  const s = b.dataset.s;
+  masque.has(s) ? masque.delete(s) : masque.add(s);
+  afficher();
+});
+$("toutafficher").addEventListener("click", () => { masque = new Set(); data && afficher(); });
+$("toutmasquer").addEventListener("click", () => { masque = new Set(symboles); data && afficher(); });
+$("mode").addEventListener("change", () => data && graphique());
+$("rafraichir").addEventListener("click", charger);
+
+// compte à rebours + actualisation automatique
+let tic = 0;
+setInterval(() => {
+  if (restant > 0) restant--;
+  $("compte").textContent = restant > 0 ? restant + " s" : "en cours…";
+  if ($("auto").checked && ++tic % 5 === 0) charger();
+}, 1000);
+
+charger();
+</script>
+</body>
+</html>

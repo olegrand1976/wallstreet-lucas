@@ -1,0 +1,16 @@
+from flask import Flask, jsonify
+app = Flask(__name__)
+# Base de données en mémoire vive du serveur
+stock_marche = {
+"pommes": 15,
+"carottes": 8,
+"poireaux": 12,
+"tomates": 20
+}
+@app.route("/produits", methods=["GET"])
+def consulter_produits():
+# Renvoie les stocks sous format standard JSON
+return jsonify(stock_marche)
+if __name__ == "__main__":
+print("Serveur du Marché Virtuel actif sur http://127.0.0.1:5000")
+app.run(port=5000)
